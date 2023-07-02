@@ -20,3 +20,86 @@
     <script src="script.js"></script>
 </body>
 </html>
+#chat-container {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#message-container {
+    height: 300px;
+    border: 1px solid #ccc;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+}
+
+#username-container {
+    margin-bottom: 10px;
+}
+
+#username-input {
+    padding: 10px;
+    margin-right: 10px;
+}
+
+#input-container {
+    display: flex;
+}
+
+#message-input {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+#send-button {
+    padding: 10px;
+    width: 80px;
+}
+const messageContainer = document.getElementById("message-container");
+const usernameInput = document.getElementById("username-input");
+const usernameButton = document.getElementById("username-button");
+const messageInput = document.getElementById("message-input");
+const sendButton = document.getElementById("send-button");
+
+usernameButton.addEventListener("click", setUsername);
+sendButton.addEventListener("click", sendMessage);
+
+let username = null;
+
+function setUsername() {
+    const inputUsername = usernameInput.value.trim();
+
+    if (inputUsername !== "") {
+        username = inputUsername;
+        usernameInput.disabled = true;
+        usernameButton.disabled = true;
+        messageInput.focus();
+    }
+}
+
+function sendMessage() {
+    const message = messageInput.value.trim();
+
+    if (username && message !== "") {
+        const messageElement = createMessageElement(username, message);
+        messageContainer.appendChild(messageElement);
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+        messageInput.value = "";
+    }
+}
+
+function createMessageElement(username, message) {
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message");
+
+    const usernameElement = document.createElement("strong");
+    usernameElement.textContent = username;
+    messageElement.appendChild(usernameElement);
+
+    const messageTextElement = document.createElement("span");
+    messageTextElement.textContent = ": " + message;
+    messageElement.appendChild(messageTextElement);
+
+    return messageElement;
+}
